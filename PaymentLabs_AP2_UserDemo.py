@@ -58,6 +58,7 @@ def reset_demo():
     st.session_state.current_product = None
     st.session_state.workflow_mandate = None
     st.session_state.audit_log = []
+    st.session_state.payment_resp = None
 
 def show_alexa_message(text: str):
     if "alexa_messages" not in st.session_state:
@@ -71,7 +72,19 @@ def add_audit(record: dict):
 # Init session state
 # ---------------------------
 if "page" not in st.session_state:
-    reset_demo()
+    st.session_state.page = "landing"
+if "alexa_messages" not in st.session_state:
+    st.session_state.alexa_messages = []
+if "shortlist" not in st.session_state:
+    st.session_state.shortlist = []
+if "current_product" not in st.session_state:
+    st.session_state.current_product = None
+if "workflow_mandate" not in st.session_state:
+    st.session_state.workflow_mandate = None
+if "audit_log" not in st.session_state:
+    st.session_state.audit_log = []
+if "payment_resp" not in st.session_state:
+    st.session_state.payment_resp = None
 
 USER = {
     "name": "Aamir Al Harthy",
@@ -89,7 +102,7 @@ if st.session_state.page == "landing":
         st.session_state.shortlist = PRODUCTS[:3]
         show_alexa_message(f"I found {len(st.session_state.shortlist)} options - showing them now.")
         st.session_state.page = "shortlist"
-        st.experimental_rerun()
+        st.rerun()
 
     st.subheader("Alexa Messages")
     for msg in st.session_state.alexa_messages[-4:]:
@@ -105,12 +118,12 @@ elif st.session_state.page == "shortlist":
     st.write("Alexa found these three hiking shoes on Amazon UAE. Tap one to order.")
     for p in st.session_state.shortlist:
         with st.container():
-            st.image(p["image"], use_column_width=True)
+            st.image(p["image"], use_container_width=True)
             st.markdown(f"**{p['title']}**  \n{p['specs']}  \n**{p['currency']} {p['price']:.2f}**")
             if st.button("Order with Alexa", key=f"order_{p['id']}"):
                 st.session_state.current_product = p
                 st.session_state.page = "checkout"
-                st.experimental_rerun()
+                st.rerun()
 
     st.button("Back", key="back_to_landing", on_click=reset_demo)
 
@@ -156,7 +169,7 @@ elif st.session_state.page == "checkout":
 
         st.session_state.payment_resp = payment_resp
         st.session_state.page = "confirmation"
-        st.experimental_rerun()
+        st.rerun()
 
     st.button("Cancel", key="cancel_order", on_click=reset_demo)
 
