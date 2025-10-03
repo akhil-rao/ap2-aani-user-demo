@@ -10,15 +10,7 @@ import streamlit as st
 import json
 from pathlib import Path
 from datetime import datetime
-from ap2_lib import (
-    create_intent_mandate,
-    register_with_cbuae,
-    convert_intent_to_payment,
-    risk_check,
-    mock_payment,
-    append_audit,
-    Mandate,
-)
+from ap2_lib import create_intent_mandate, register_with_cbuae, convert_intent_to_payment, risk_check, mock_payment, append_audit, Mandate
 
 # ---------------------------
 # Page config & font
