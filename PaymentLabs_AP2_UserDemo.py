@@ -11,10 +11,14 @@ import json
 from pathlib import Path
 from datetime import datetime
 from ap2_lib import (
-    create_intent_mandate, register_with_cbuae, convert_intent_to_payment,
-    risk_check, mock_payment, append_audit
+    create_intent_mandate,
+    register_with_cbuae,
+    convert_intent_to_payment,
+    risk_check,
+    mock_payment,
+    append_audit,
+    Mandate,
 )
-from ap2_lib import Mandate
 
 # ---------------------------
 # Page config & font
@@ -98,7 +102,7 @@ if st.session_state.page == "landing":
 # ---------------------------
 elif st.session_state.page == "shortlist":
     st.header("Alexa: Shortlisted Options")
-    st.write("Alexa found these three hiking shoes on Amazon UAE. Tap one to view details.")
+    st.write("Alexa found these three hiking shoes on Amazon UAE. Tap one to order.")
     for p in st.session_state.shortlist:
         with st.container():
             st.image(p["image"], use_column_width=True)
