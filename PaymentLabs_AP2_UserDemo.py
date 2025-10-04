@@ -66,25 +66,23 @@ def show_alexa_message(text: str):
     st.session_state.alexa_messages.append({"ts": datetime.utcnow().isoformat(), "text": text})
 
 def add_audit(record: dict):
-    append_audit(st.session_state, record)
+    st.session_state.audit_log.append(record)
 
 # ---------------------------
 # Init session state
 # ---------------------------
-if "page" not in st.session_state:
-    st.session_state.page = "landing"
-if "alexa_messages" not in st.session_state:
-    st.session_state.alexa_messages = []
-if "shortlist" not in st.session_state:
-    st.session_state.shortlist = []
-if "current_product" not in st.session_state:
-    st.session_state.current_product = None
-if "workflow_mandate" not in st.session_state:
-    st.session_state.workflow_mandate = None
-if "audit_log" not in st.session_state:
-    st.session_state.audit_log = []
-if "payment_resp" not in st.session_state:
-    st.session_state.payment_resp = None
+defaults = {
+    "page": "landing",
+    "alexa_messages": [],
+    "shortlist": [],
+    "current_product": None,
+    "workflow_mandate": None,
+    "audit_log": [],
+    "payment_resp": None,
+}
+for k, v in defaults.items():
+    if k not in st.session_state:
+        st.session_state[k] = v
 
 USER = {
     "name": "Aamir Al Harthy",
@@ -97,6 +95,7 @@ USER = {
 if st.session_state.page == "landing":
     st.title("Aamir — Shopping with Alexa")
     st.write("Context: Aamir is preparing for a snowy trip to Switzerland. He asks Alexa to find hiking shoes suitable for snow.")
+
     if st.button("Ask Alexa to search hiking shoes", key="ask_alexa"):
         show_alexa_message("Searching Amazon.ae for hiking shoes suitable for snowy Switzerland...")
         st.session_state.shortlist = PRODUCTS[:3]
@@ -116,6 +115,7 @@ if st.session_state.page == "landing":
 elif st.session_state.page == "shortlist":
     st.header("Alexa: Shortlisted Options")
     st.write("Alexa found these three hiking shoes on Amazon UAE. Tap one to order.")
+
     for p in st.session_state.shortlist:
         with st.container():
             st.image(p["image"], use_container_width=True)
@@ -141,7 +141,9 @@ elif st.session_state.page == "checkout":
 
     if st.button("Confirm — Place Order", key="confirm_order"):
         # Create mandate
-        mandate = create_intent_mandate(USER["name"], "merchant:amazon-uae", p["price"], p["currency"], f"Order {p['title']}")
+        mandate = create_intent_mandate(
+            USER["name"], "merchant:amazon-uae", p["price"], p["currency"], f"Order {p['title']}"
+        )
         st.session_state.workflow_mandate = mandate
         add_audit({"event": "MANDATE_ISSUED", "mandate_id": mandate.mandate_id, "timestamp": datetime.utcnow().isoformat()})
 
@@ -179,6 +181,7 @@ elif st.session_state.page == "checkout":
 elif st.session_state.page == "confirmation":
     p = st.session_state.current_product
     payment_resp = st.session_state.payment_resp
+
     st.success("✅ Order Confirmed!")
     st.image(p["image"], width=250)
     st.write(f"**{p['title']}** ordered successfully.")
