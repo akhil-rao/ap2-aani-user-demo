@@ -1,0 +1,26 @@
+[
+  {
+    "id": "p1",
+    "title": "Columbia Snow Hiking Boots",
+    "specs": "Waterproof, insulated, rubber sole",
+    "price": 499.0,
+    "currency": "AED",
+    "image": "https://via.placeholder.com/300x200.png?text=Columbia+Snow+Boots"
+  },
+  {
+    "id": "p2",
+    "title": "Salomon Quest Winter GTX",
+    "specs": "Gore-Tex, durable, lightweight",
+    "price": 699.0,
+    "currency": "AED",
+    "image": "https://via.placeholder.com/300x200.png?text=Salomon+Winter+Boots"
+  },
+  {
+    "id": "p3",
+    "title": "North Face Snow Explorer",
+    "specs": "Thermal lining, anti-slip grip",
+    "price": 599.0,
+    "currency": "AED",
+    "image": "https://via.placeholder.com/300x200.png?text=North+Face+Explorer"
+  }
+]
